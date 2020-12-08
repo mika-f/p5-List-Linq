@@ -3,8 +3,10 @@ use 5.030;
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+use Exporter::Lite;
 
+
+our $VERSION = "0.01";
 
 
 1;
