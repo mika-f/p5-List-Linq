@@ -5,9 +5,14 @@ use warnings;
 
 use Exporter::Lite;
 
+use List::Linq::Enumerable;
 
 our $VERSION = "0.01";
+our @EXPORT  = qw/enumerable/;
 
+sub enumerable {
+    List::Linq::Enumerable->new(@_);
+}
 
 1;
 __END__
