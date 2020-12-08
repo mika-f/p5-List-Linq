@@ -107,6 +107,33 @@ sub average_by {
     return $sum / $count;
 }
 
+# Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) -> IEnumerable<TResult>
+
+use List::Linq::Query::Select;
+
+sub select {
+    my $self     = shift;
+    my $selector = shift;
+
+    die 'Argument Null Error : selector'    unless $selector;
+    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+
+    return List::Linq::Query::Select->new($self, $selector);
+}
+
+# Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, TResult>) -> IEnumerable<TResult>
+
+use List::Linq::Query::SelectIndexed;
+
+sub select_with_index {
+    my $self     = shift;
+    my $selector = shift;
+
+    die 'Argument Null Error : selector'    unless $selector;
+    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+
+    return List::Linq::Query::SelectIndexed->new($self, $selector);
+}
 # interface implementations
 
 sub current {
