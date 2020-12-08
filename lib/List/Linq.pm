@@ -14,6 +14,14 @@ sub enumerable {
     List::Linq::Enumerable->new(@_);
 }
 
+# static Empty<TSource>() -> IEnumerable<TSource>
+sub empty {
+    my $self = shift;
+
+    return List::Linq::Enumerable->new([]);
+}
+
+
 1;
 __END__
 

@@ -191,8 +191,6 @@ sub element_at_or_default {
     die 'not implemented because Perl does not have static type system.';
 }
 
-sub empty {}
-
 sub except {}
 
 # First<TSource>(IEnumerable<TSource>) -> TSource
