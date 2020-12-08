@@ -135,6 +135,54 @@ sub select_with_index {
     return List::Linq::Query::SelectIndexed->new($self, $selector);
 }
 
+sub select_many {}
+
+sub sequence_equal {}
+
+sub single {}
+
+sub single_or_default {}
+
+sub skip {}
+
+sub skip_last {}
+
+sub skip_while {}
+
+sub sum {}
+
+sub take {}
+
+sub take_last {}
+
+sub take_while {}
+
+sub then_by {}
+
+sub then_by_descending {}
+
+# ToArray<TSource>(IEnumerable<TSource>) -> TSource[]
+sub to_array {
+    my $self  = shift;
+    my $array;
+
+    while ($self->move_next) {
+        push @{$array}, $self->current;
+    }
+
+    return wantarray ? @$array : $array;
+}
+
+sub to_dictionary {}
+
+sub to_hash_set {}
+
+sub to_list {}
+
+sub to_lookup {}
+
+sub union {}
+
 # Where<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> IEnumerable<TSource>
 
 use List::Linq::Query::Where;
