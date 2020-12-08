@@ -2,6 +2,7 @@ package List::Linq::Enumerable;
 use strict;
 use warnings;
 
+use Data::Compare;
 use Scalar::Util qw/looks_like_number/;
 
 use parent qw/List::Linq::Iterator/;
@@ -66,6 +67,10 @@ sub any_with {
     return 0;
 }
 
+sub append {}
+
+sub as_enumerable {}
+
 # Average<IEnumerable<Number>> -> Number
 sub average {
     my $self  = shift;
@@ -105,6 +110,24 @@ sub average_by {
     }
 
     return $sum / $count;
+}
+
+sub cast {}
+
+sub concat {}
+
+# Contains<TSource>(IEnumerable<TSource>, TSource) -> bool
+sub contains {
+    my $self  = shift;
+    my $value = shift;
+
+    while ($self->move_next) {
+        if (Compare($self->current, $value)) {
+            return 1;
+        }
+    }
+
+    return 0;
 }
 
 # Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) -> IEnumerable<TResult>

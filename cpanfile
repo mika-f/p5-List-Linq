@@ -1,5 +1,6 @@
 requires 'perl', '5.030';
 
+requires 'Data::Compare';
 requires 'Exporter::Lite';
 
 on 'test' => sub {
