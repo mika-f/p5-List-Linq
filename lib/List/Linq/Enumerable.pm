@@ -134,6 +134,35 @@ sub select_with_index {
 
     return List::Linq::Query::SelectIndexed->new($self, $selector);
 }
+
+# Where<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::Where;
+
+sub where {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::Where->new($self, $predicate);
+}
+
+# Where<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::WhereIndexed;
+
+sub where_with_index {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::WhereIndexed->new($self, $predicate);
+}
+
 # interface implementations
 
 sub current {
