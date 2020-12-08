@@ -306,7 +306,16 @@ sub take {
     return List::Linq::Query::Take->new($self, $count);
 }
 
-sub take_last {}
+# TakeLast<TSource>(IEnumerable<TSource>, int) -> IEnumerable<TSource>
+
+use List::Linq::Query::TakeLast;
+
+sub take_last {
+    my $self  = shift;
+    my $count = shift;
+
+    return List::Linq::Query::TakeLast->new($self, $count);
+}
 
 sub take_while {}
 
