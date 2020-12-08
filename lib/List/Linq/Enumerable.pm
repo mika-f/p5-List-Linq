@@ -73,7 +73,7 @@ sub append {}
 
 sub as_enumerable {}
 
-# Average<IEnumerable<Number>> -> Number
+# Average(IEnumerable<Number>) -> Number
 sub average {
     my $self  = shift;
     my $sum   = 0;
@@ -263,7 +263,7 @@ sub select {
     return List::Linq::Query::Select->new($self, $selector);
 }
 
-# Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Int32, TResult>) -> IEnumerable<TResult>
+# Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, Number, TResult>) -> IEnumerable<TResult>
 
 use List::Linq::Query::SelectIndexed;
 
@@ -293,9 +293,44 @@ sub skip_last {}
 
 sub skip_while {}
 
-sub sum {}
+# Sum(IEnumerable<Number>) -> NUmber
+sub sum {
+    my $self   = shift;
+    my $sum    = 0;
 
-# Take<TSource>(IEnumerable<TSource>, Int) -> IEnumerable<TSource>
+    while ($self->move_next) {
+        my $item = $self->current;
+        if (looks_like_number($item)) {
+            $sum += $item;
+        }
+    }
+
+    return $sum;
+}
+
+# Sum<TSource>(IEnumerale<TSource>, Func<TSource, Number>) -> Number
+sub sum_by {
+    my $self     = shift;
+    my $selector = shift;
+
+    die 'Argument Null Error : selector'    unless $selector;
+    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+
+    my $sum    = 0;
+
+    while ($self->move_next) {
+        local $_ = $self->current;
+        my $item = $selector->();
+
+        if (looks_like_number($item)) {
+            $sum += $item;
+        }
+    }
+
+    return $sum;
+}
+
+# Take<TSource>(IEnumerable<TSource>, Number) -> IEnumerable<TSource>
 
 use List::Linq::Query::Take;
 
@@ -306,7 +341,7 @@ sub take {
     return List::Linq::Query::Take->new($self, $count);
 }
 
-# TakeLast<TSource>(IEnumerable<TSource>, int) -> IEnumerable<TSource>
+# TakeLast<TSource>(IEnumerable<TSource>, Number) -> IEnumerable<TSource>
 
 use List::Linq::Query::TakeLast;
 
@@ -331,7 +366,7 @@ sub take_while {
     return List::Linq::Query::TakeWhile->new($self, $predicate);
 }
 
-# TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) -> IEnumerable<TSource>
+# TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Number, Boolean>) -> IEnumerable<TSource>
 
 use List::Linq::Query::TakeWhileIndexed;
 
@@ -385,7 +420,7 @@ sub where {
     return List::Linq::Query::Where->new($self, $predicate);
 }
 
-# Where<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) -> IEnumerable<TSource>
+# Where<TSource>(IEnumerable<TSource>, Func<TSource, Number, Boolean>) -> IEnumerable<TSource>
 
 use List::Linq::Query::WhereIndexed;
 

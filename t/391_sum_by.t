@@ -6,7 +6,7 @@ use Test::Deep;
 
 use List::Linq;
 
-describe 'Enumerable#average' => sub {
+describe 'Enumerable#sum' => sub {
     my $got;
 
     context 'all elements are numeric' => sub {
@@ -17,11 +17,11 @@ describe 'Enumerable#average' => sub {
             ];
             my $enumerable = enumerable($source);
 
-            $got = $enumerable->average_by(sub { $_->{age} });
+            $got = $enumerable->sum_by(sub { $_->{age} });
         };
 
-        it 'retuens average of all elements' => sub {
-            is $got, 15.5;
+        it 'retuens sum of all elements' => sub {
+            is $got, 31;
         };
     };
 
@@ -34,11 +34,11 @@ describe 'Enumerable#average' => sub {
             ];
             my $enumerable = enumerable($source);
 
-            $got = $enumerable->average_by(sub { $_->{value} });
+            $got = $enumerable->sum_by(sub { $_->{value} });
         };
 
-        it 'returns average of numeric elements' => sub {
-            is $got, 2;
+        it 'returns sum of numeric elements' => sub {
+            is $got, 4;
         };
     };
 };
