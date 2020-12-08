@@ -317,7 +317,33 @@ sub take_last {
     return List::Linq::Query::TakeLast->new($self, $count);
 }
 
-sub take_while {}
+# TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::TakeWhile;
+
+sub take_while {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::TakeWhile->new($self, $predicate);
+}
+
+# TakeWhile<TSource>(IEnumerable<TSource>, Func<TSource, Int32, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::TakeWhileIndexed;
+
+sub take_while_with_index {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::TakeWhileIndexed->new($self, $predicate);
+}
 
 sub then_by {}
 
