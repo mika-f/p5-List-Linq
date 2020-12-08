@@ -41,6 +41,31 @@ sub all {
     return 1;
 }
 
+# Any<TSource>(IEnumerable<TSource>) -> Boolean
+sub any {
+    my $self = shift;
+
+    return $self->move_next;
+}
+
+# Any<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> Boolean
+sub any_with {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    while ($self->move_next) {
+        local $_ = $self->current;
+        if ($predicate->()) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 
 # interface implementations
 
