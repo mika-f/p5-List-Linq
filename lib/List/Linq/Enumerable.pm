@@ -24,6 +24,8 @@ sub new {
 # extension implementations
 # ported from System.Linq.Enumerable in .NET 5
 
+sub aggregate {}
+
 # All<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> Boolean
 sub all {
     my $self      = shift;
@@ -112,7 +114,9 @@ sub average_by {
     return $sum / $count;
 }
 
-sub cast {}
+sub cast {
+    die 'not implemented because Perl does not have static type system.';
+}
 
 sub concat {}
 
@@ -162,6 +166,87 @@ sub count_with {
     return $count;
 }
 
+sub default_if_empty {
+    die 'not implemented because Perl does not have static type system.';
+}
+
+sub distinct {}
+
+sub element_at {}
+
+sub element_at_or_default {
+    die 'not implemented because Perl does not have static type system.';
+}
+
+sub empty {}
+
+sub except {}
+
+sub first {
+    my $self = shift;
+
+    if ($self->move_next) {
+        return $self->current;
+    }
+}
+
+sub first_with {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    while ($self->move_next) {
+        local $_ = $self->current;
+        if ($predicate->()) {
+            return $self->current;
+        }
+    }
+}
+
+sub first_or_default {
+    die 'not implemented because Perl does not have static type system.';
+}
+
+sub group_by {}
+
+sub group_join {}
+
+sub intersect {}
+
+sub last {}
+
+sub last_or_default {
+    die 'not implemented because Perl does not have static type system.';
+}
+
+sub long_count {
+    my $self = shift;
+
+    return $self->count;
+}
+
+sub max {}
+
+sub min {}
+
+sub of_type {
+    die 'not implemented because Perl does not have static type system.';
+}
+
+sub order_by {}
+
+sub order_by_descending {}
+
+sub prepend {}
+
+sub range {}
+
+sub repeat {}
+
+sub reverse {}
+
 # Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) -> IEnumerable<TResult>
 
 use List::Linq::Query::Select;
@@ -196,7 +281,9 @@ sub sequence_equal {}
 
 sub single {}
 
-sub single_or_default {}
+sub single_or_default {
+    die 'not implemented because Perl does not have static type system.';
+}
 
 sub skip {}
 
