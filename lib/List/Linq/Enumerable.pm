@@ -172,7 +172,20 @@ sub default_if_empty {
 
 sub distinct {}
 
-sub element_at {}
+# ElementAt<TSource>(IEnumerable<TSource>, Number) -> TSource
+sub element_at {
+    my $self  = shift;
+    my $index = shift;
+
+    my $count = 0;
+    while ($self->move_next) {
+        if ($count++ == $index) {
+            return $self->current;
+        }
+    }
+
+    return undef;
+}
 
 sub element_at_or_default {
     die 'not implemented because Perl does not have static type system.';
