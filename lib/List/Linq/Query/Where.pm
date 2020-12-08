@@ -16,7 +16,7 @@ sub new {
 }
 
 sub move_next {
-    my $self  = shift;
+    my $self      = shift;
     my $predicate = $self->{predicate};
 
     while ($self->SUPER::move_next) {

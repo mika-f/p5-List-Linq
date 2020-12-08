@@ -182,6 +182,7 @@ sub empty {}
 
 sub except {}
 
+# First<TSource>(IEnumerable<TSource>) -> TSource
 sub first {
     my $self = shift;
 
@@ -190,6 +191,7 @@ sub first {
     }
 }
 
+# First<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> TSource
 sub first_with {
     my $self      = shift;
     my $predicate = shift;
@@ -293,7 +295,16 @@ sub skip_while {}
 
 sub sum {}
 
-sub take {}
+# Take<TSource>(IEnumerable<TSource>, Int) -> IEnumerable<TSource>
+
+use List::Linq::Query::Take;
+
+sub take {
+    my $self  = shift;
+    my $count = shift;
+
+    return List::Linq::Query::Take->new($self, $count);
+}
 
 sub take_last {}
 
