@@ -66,6 +66,46 @@ sub any_with {
     return 0;
 }
 
+# Average<IEnumerable<Number>> -> Number
+sub average {
+    my $self  = shift;
+    my $sum   = 0;
+    my $count = 0;
+
+    while ($self->move_next) {
+        my $item = $self->current;
+        if (looks_like_number($item)) {
+            $sum   += $item;
+            $count += 1;
+        }
+    }
+
+    return $sum / $count;
+}
+
+# Average<TSource>(IEnumerable<Number>, Func<TSource, Number>) -> Number
+sub average_by {
+    my $self     = shift;
+    my $selector = shift;
+
+    die 'Argument Null Error : selector'    unless $selector;
+    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+
+    my $sum   = 0;
+    my $count = 0;
+
+    while ($self->move_next) {
+        local $_ = $self->current;
+        my $item = $selector->();
+
+        if (looks_like_number($item)) {
+            $sum   += $item;
+            $count += 1;
+        }
+    }
+
+    return $sum / $count;
+}
 
 # interface implementations
 
