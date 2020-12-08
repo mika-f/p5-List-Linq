@@ -30,7 +30,7 @@ sub all {
     my $predicate = shift;
 
     die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
 
     while ($self->move_next) {
         local $_ = $self->current;
@@ -55,7 +55,7 @@ sub any_with {
     my $predicate = shift;
 
     die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
 
     while ($self->move_next) {
         local $_ = $self->current;
@@ -128,6 +128,38 @@ sub contains {
     }
 
     return 0;
+}
+
+# Count<TSource>(IEnumerable<TSource>) -> Number
+sub count {
+    my $self  = shift;
+    my $count = 0;
+
+    while ($self->move_next) {
+        $count++;
+    }
+
+    return $count;
+}
+
+# Count<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> Number
+sub count_with {
+    my $self      = shift;
+    my $predicate = shift;
+
+    die 'Argument Null Error : predicate'    unless $predicate;
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+
+    my $count     = 0;
+
+    while ($self->move_next) {
+        local $_ = $self->current;
+        if ($predicate->()) {
+            $count++;
+        }
+    }
+
+    return $count;
 }
 
 # Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) -> IEnumerable<TResult>
@@ -215,7 +247,7 @@ sub where {
     my $predicate = shift;
 
     die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::Where->new($self, $predicate);
 }
@@ -229,7 +261,7 @@ sub where_with_index {
     my $predicate = shift;
 
     die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Aegument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::WhereIndexed->new($self, $predicate);
 }
