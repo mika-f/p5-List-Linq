@@ -312,7 +312,16 @@ sub single_or_default {
     croak 'NotImplementedException: Perl does not support static type system.';
 }
 
-sub skip {}
+# Skip<TSource>(IEnumerable<TSource>, Number) -> IEnumerable<TSource>
+
+use List::Linq::Query::Skip;
+
+sub skip {
+    my $self  = shift;
+    my $count = shift;
+
+    return List::Linq::Query::Skip->new($self, $count);
+}
 
 sub skip_last {}
 
