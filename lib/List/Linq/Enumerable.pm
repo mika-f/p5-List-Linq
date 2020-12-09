@@ -325,7 +325,33 @@ sub skip {
 
 sub skip_last {}
 
-sub skip_while {}
+# SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::SkipWhile;
+
+sub skip_while {
+    my $self      = shift;
+    my $predicate = shift;
+
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::SkipWhile->new($self, $predicate);
+}
+
+# SkipWhile<TSource>(IEnumerable<TSource>, Func<TSource, Number, Boolean>) -> IEnumerable<TSource>
+
+use List::Linq::Query::SkipWhileIndexed;
+
+sub skip_while_with_index {
+    my $self      = shift;
+    my $predicate = shift;
+
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
+
+    return List::Linq::Query::SkipWhileIndexed->new($self, $predicate);
+}
 
 # Sum(IEnumerable<Number>) -> NUmber
 sub sum {
