@@ -3,6 +3,7 @@ use 5.030;
 use strict;
 use warnings;
 
+use Carp qw/croak/;
 use Exporter::Lite;
 
 use List::Linq::Enumerable;
@@ -18,9 +19,21 @@ sub enumerable {
 sub empty {
     my $self = shift;
 
-    return List::Linq::Enumerable->new([]);
+    return enumerable([]);
 }
 
+# static Range(Number, Number) -> IEnumerable<Number>
+use List::Linq::Query::Range;
+
+sub range {
+    my $self  = shift;
+    my $start = shift;
+    my $count = shift;
+
+    croak 'ArgumentOutOfRangeException: count is less than 0' if $count < 0;
+
+    return List::Linq::Query::Range->new(enumerable([]), $start, $count);
+}
 
 1;
 __END__

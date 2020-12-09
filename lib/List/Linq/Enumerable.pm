@@ -268,8 +268,6 @@ sub order_by_descending {}
 
 sub prepend {}
 
-sub range {}
-
 sub repeat {}
 
 sub reverse {}
