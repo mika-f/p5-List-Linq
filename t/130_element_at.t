@@ -3,6 +3,7 @@ use warnings;
 
 use Test::Spec;
 use Test::Deep;
+use Test::Exception;
 
 use List::Linq;
 
@@ -23,15 +24,32 @@ describe 'Enumerable#element_at' => sub {
     };
 
     context 'element_at out of range' => sub {
-        before all => sub {
-            my $source     = [qw/1 2 3 4 5 6/];
-            my $enumerable = enumerable($source);
+        my $enumerable;
 
-            $got = $enumerable->element_at(10);
+        context 'greater than or equal to the number of elements' => sub {
+            before all => sub {
+                my $source     = [qw/1 2 3 4 5 6/];
+                $enumerable = enumerable($source);
+            };
+
+            it 'throw exception' => sub {
+                throws_ok {
+                    $enumerable->element_at(10);
+                } qr/ArgumentOutOfRangeException/;
+            };
         };
 
-        it 'successful' => sub {
-            is $got, undef;
+        context 'less than 0' => sub {
+            before all => sub {
+                my $source     = [qw/1 2 3 4 5 6/];
+                $enumerable = enumerable($source);
+            };
+
+            it 'throw exception' => sub {
+                throws_ok {
+                    $enumerable->element_at(-1);
+                } qr/ArgumentOutOfRangeException/;
+            };
         };
     };
 };

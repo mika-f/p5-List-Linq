@@ -3,6 +3,7 @@ use warnings;
 
 use Test::Spec;
 use Test::Deep;
+use Test::Exception;
 
 use List::Linq;
 
@@ -32,6 +33,20 @@ describe 'Enumerable#average' => sub {
 
         it 'returns average of numeric elements' => sub {
             is $got, 3.5;
+        };
+    };
+
+    context 'when source is empty list, throw exception' => sub {
+        my $enumerable;
+
+        before all => sub {
+            $enumerable = enumerable([]);
+        };
+
+        it 'throw exception' => sub {
+            throws_ok {
+                $enumerable->average;
+            } qr/InvalidOperationException/;
         };
     };
 };

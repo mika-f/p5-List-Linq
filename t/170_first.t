@@ -3,6 +3,7 @@ use warnings;
 
 use Test::Spec;
 use Test::Deep;
+use Test::Exception;
 
 use List::Linq;
 
@@ -19,6 +20,20 @@ describe 'Enumerable#first' => sub {
 
         it 'successful' => sub {
             cmp_deeply $got, 1;
+        };
+    };
+
+    context 'when source is empty' => sub {
+        my $enumerable;
+
+        before all => sub {
+            $enumerable = enumerable([]);
+        };
+
+        it 'throw exception' => sub {
+            throws_ok {
+                $enumerable->first;
+            } qr/InvalidOperationException/;
         };
     };
 };

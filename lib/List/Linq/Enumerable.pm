@@ -2,6 +2,7 @@ package List::Linq::Enumerable;
 use strict;
 use warnings;
 
+use Carp qw/croak/;
 use Data::Compare;
 use Scalar::Util qw/looks_like_number/;
 
@@ -31,8 +32,8 @@ sub all {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     while ($self->move_next) {
         local $_ = $self->current;
@@ -56,8 +57,8 @@ sub any_with {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     while ($self->move_next) {
         local $_ = $self->current;
@@ -87,6 +88,10 @@ sub average {
         }
     }
 
+    if ($count == 0) {
+        croak 'InvalidOperationException : source contains no elements';
+    }
+
     return $sum / $count;
 }
 
@@ -95,8 +100,8 @@ sub average_by {
     my $self     = shift;
     my $selector = shift;
 
-    die 'Argument Null Error : selector'    unless $selector;
-    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+    croak 'ArgumentNullException : selector is null'       unless $selector;
+    croak 'InvalidTypeException : selector is not coderef' unless ref($selector) eq 'CODE';
 
     my $sum   = 0;
     my $count = 0;
@@ -111,11 +116,15 @@ sub average_by {
         }
     }
 
+    if ($count == 0) {
+        croak 'InvalidOperationException : source contains no elements';
+    }
+
     return $sum / $count;
 }
 
 sub cast {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub concat {}
@@ -151,8 +160,8 @@ sub count_with {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     my $count     = 0;
 
@@ -167,7 +176,7 @@ sub count_with {
 }
 
 sub default_if_empty {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub distinct {}
@@ -184,11 +193,11 @@ sub element_at {
         }
     }
 
-    return undef;
+    croak 'ArgumentOutOfRangeException: index is less than 0 or greater than or equal to the number of elements in source';
 }
 
 sub element_at_or_default {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub except {}
@@ -200,6 +209,8 @@ sub first {
     if ($self->move_next) {
         return $self->current;
     }
+
+    croak 'InvalidOperationException: source sequence is empty';
 }
 
 # First<TSource>(IEnumerable<TSource>, Func<TSource, Boolean>) -> TSource
@@ -207,8 +218,8 @@ sub first_with {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     while ($self->move_next) {
         local $_ = $self->current;
@@ -216,10 +227,12 @@ sub first_with {
             return $self->current;
         }
     }
+
+    croak 'InvalidOperationException: source sequence is empty or no element satisfies the condition in predicate';
 }
 
 sub first_or_default {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub group_by {}
@@ -228,10 +241,11 @@ sub group_join {}
 
 sub intersect {}
 
+# Last<TSource>()
 sub last {}
 
 sub last_or_default {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub long_count {
@@ -245,7 +259,7 @@ sub max {}
 sub min {}
 
 sub of_type {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub order_by {}
@@ -268,8 +282,8 @@ sub select {
     my $self     = shift;
     my $selector = shift;
 
-    die 'Argument Null Error : selector'    unless $selector;
-    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+    croak 'ArgumentNullException : selector is null'       unless $selector;
+    croak 'InvalidTypeException : selector is not coderef' unless ref($selector) eq 'CODE';
 
     return List::Linq::Query::Select->new($self, $selector);
 }
@@ -282,8 +296,8 @@ sub select_with_index {
     my $self     = shift;
     my $selector = shift;
 
-    die 'Argument Null Error : selector'    unless $selector;
-    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+    croak 'ArgumentNullException : selector is null'       unless $selector;
+    croak 'InvalidTypeException : selector is not coderef' unless ref($selector) eq 'CODE';
 
     return List::Linq::Query::SelectIndexed->new($self, $selector);
 }
@@ -295,7 +309,7 @@ sub sequence_equal {}
 sub single {}
 
 sub single_or_default {
-    die 'not implemented because Perl does not have static type system.';
+    croak 'NotImplementedException: Perl does not support static type system.';
 }
 
 sub skip {}
@@ -324,8 +338,8 @@ sub sum_by {
     my $self     = shift;
     my $selector = shift;
 
-    die 'Argument Null Error : selector'    unless $selector;
-    die 'Argument Invalid Error : selector' unless ref($selector) eq 'CODE';
+    croak 'ArgumentNullException : selector is null'       unless $selector;
+    croak 'InvalidTypeException : selector is not coderef' unless ref($selector) eq 'CODE';
 
     my $sum    = 0;
 
@@ -371,8 +385,8 @@ sub take_while {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::TakeWhile->new($self, $predicate);
 }
@@ -385,8 +399,8 @@ sub take_while_with_index {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::TakeWhileIndexed->new($self, $predicate);
 }
@@ -425,8 +439,8 @@ sub where {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::Where->new($self, $predicate);
 }
@@ -439,8 +453,8 @@ sub where_with_index {
     my $self      = shift;
     my $predicate = shift;
 
-    die 'Argument Null Error : predicate'    unless $predicate;
-    die 'Argument Invalid Error : predicate' unless ref($predicate) eq 'CODE';
+    croak 'ArgumentNullException : predicate is null'       unless $predicate;
+    croak 'InvalidTypeException : predicate is not coderef' unless ref($predicate) eq 'CODE';
 
     return List::Linq::Query::WhereIndexed->new($self, $predicate);
 }
