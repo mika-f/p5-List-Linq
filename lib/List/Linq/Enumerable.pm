@@ -300,7 +300,21 @@ sub select_with_index {
 
 sub select_many {}
 
-sub sequence_equal {}
+# SequenceEqual<TSource>(IEnumerable<TSource>, IEnumerable<TSource>) -> Boolean
+sub sequence_equal {
+    my $self       = shift;
+    my $enumerable = shift;
+
+    croak 'ArgumentNullException : enumerable is null' unless $enumerable;
+
+    while($self->move_next && $enumerable->move_next) {
+        return 0 unless Compare($self->current, $enumerable->current);
+    }
+
+    return 0 if $enumerable->move_next;
+
+    return 1;
+}
 
 sub single {}
 
