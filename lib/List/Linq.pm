@@ -35,6 +35,19 @@ sub range {
     return List::Linq::Query::Range->new(enumerable([]), $start, $count);
 }
 
+# static Repeat<TResult>(TResult, Number) -> IEnumerable<TResult>
+use List::Linq::Query::Repeat;
+
+sub repeat {
+    my $self  = shift;
+    my $value = shift;
+    my $count = shift;
+
+    croak 'ArgumentOutOfRangeException: count is less than 0' if $count < 0;
+
+    return List::Linq::Query::Repeat->new(enumerable([]), $value, $count);
+}
+
 1;
 __END__
 

@@ -268,8 +268,6 @@ sub order_by_descending {}
 
 sub prepend {}
 
-sub repeat {}
-
 sub reverse {}
 
 # Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>) -> IEnumerable<TResult>
