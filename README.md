@@ -14,9 +14,9 @@ List::Linq - .NET LINQ port to Perl.
     ];
 
     # ['Sophie Neuenmuller', 'Corneria']
-    my $filtered = enumerable(@$data)->where(sub { $_->{user}->{id} % 2 == 1 }) # filter by index
-                                     ->select(sub { $_->{user}->{name} })       # get user name
-                                     ->to_array();                              # get result as array
+    my $filtered = enumerable($data)->where(sub { $_->{user}->{id} % 2 == 1 }) # filter by index
+                                    ->select(sub { $_->{user}->{name} })       # get user name
+                                    ->to_array();                              # get result as array
 ```
 
 # DESCRIPTION
