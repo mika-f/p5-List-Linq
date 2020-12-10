@@ -5,23 +5,30 @@ List::Linq - .NET LINQ port to Perl.
 # SYNOPSIS
 
 ```perl
-    use List::Linq;
+use List::Linq;
 
-    my $data = [
-        { user => { id => 1, name => 'Sophie Neuenmuller' }, series => [qw/A17 A18 A19/] },
-        { user => { id => 2, name => 'Plachta' },            series => [qw/A17 A18 A19/] },
-        { user => { id => 3, name => 'Corneria' },           series => [qw/A17 A19/] },
-    ];
+my $data = [
+    { user => { id => 1, name => 'Sophie Neuenmuller' }, series => [qw/A17 A18 A19/] },
+    { user => { id => 2, name => 'Plachta' },            series => [qw/A17 A18 A19/] },
+    { user => { id => 3, name => 'Corneria' },           series => [qw/A17 A19/] },
+];
 
-    # ['Sophie Neuenmuller', 'Corneria']
-    my $filtered = enumerable($data)->where(sub { $_->{user}->{id} % 2 == 1 }) # filter by index
-                                    ->select(sub { $_->{user}->{name} })       # get user name
-                                    ->to_array();                              # get result as array
+# ['Sophie Neuenmuller', 'Corneria']
+my $filtered = enumerable($data)->where(sub { $_->{user}->{id} % 2 == 1 }) # filter by index
+                                ->select(sub { $_->{user}->{name} })       # get user name
+                                ->to_array();                              # get result as array
 ```
 
 # DESCRIPTION
 
-A powerful language integrated query (LINQ) library for Perl5.
+A powerful language integrated query (LINQ) library for Perl5.  
+This module is a port of .NET 5's LINQ methods.  
+It can be written in Perl in the same way as when using LINQ in C# and other .NET languages.  
+See the test directory for a list of ported methods.
+
+# METHODS
+
+TODO
 
 # LICENSE
 
